@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins&display=swap");
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat";
+  margin: 0;
+}
+
+body {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+body .kiri {
+  flex: 2;
+}
+body .kiri form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+body .kiri h1 {
+  margin-top: 10px;
+}
+body .kanan {
+  flex: 8;
+  overflow-x: auto;
+}
+body .kanan .tabs {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+body .kanan .tabs .tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  border: 1px solid transparent;
+  border-bottom: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+body .kanan .tabs .tab:hover {
+  background-color: #f0f0f0;
+}
+body .kanan .tabs .tab.active {
+  border: 1px solid #ccc;
+  border-bottom: 1px solid white;
+  background-color: white;
+  font-weight: 700;
+}
+body .kanan .tab-content {
+  display: none;
+}
+body .kanan .tab-content.active {
+  display: block;
+}
+body .kanan .tab-content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+body .kanan .tab-content table th,
+body .kanan .tab-content table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+}
+body .kanan .tab-content table th {
+  background-color: #f9f9f9;
+  font-weight: 600;
+}
+body .kanan .tab-content table tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}/*# sourceMappingURL=index.css.map */

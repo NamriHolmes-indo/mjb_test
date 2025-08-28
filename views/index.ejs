@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manajemen Barang dan Transaksi</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <div class="kiri">
+      <h1>Tambah Item Baru</h1>
+      <form method="POST" action="/items/new">
+        <label>Nama Barang:</label>
+        <input type="text" name="nama_barang" required />
+
+        <label>Satuan:</label>
+        <input type="text" name="satuan" required />
+
+        <label>Stok:</label>
+        <input type="number" name="stok" step="0.01" min="0" value="0" />
+
+        <label>Harga Satuan:</label>
+        <input type="number" name="harga_satuan" step="0.01" min="0" required />
+
+        <label>Status:</label>
+        <select name="status">
+          <option value="A" selected>Aktif</option>
+          <option value="N">Nonaktif</option>
+        </select>
+
+        <button type="submit">Tambah Item</button>
+      </form>
+    </div>
+
+    <div class="kanan">
+      <div class="tabs">
+        <div class="tab active" data-tab="items">Item</div>
+        <div class="tab" data-tab="transaksi">Transaksi</div>
+        <div class="tab" data-tab="cart">Cart</div>
+      </div>
+
+      <div id="items" class="tab-content active">
+        <h1>Daftar Item</h1>
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>ID Barang</th>
+              <th>Nama Barang</th>
+              <th>Satuan</th>
+              <th>Stok</th>
+              <th>Harga Satuan</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% items.forEach(item => { %>
+            <tr>
+              <td><%= item.id_barang %></td>
+              <td><%= item.nama_barang %></td>
+              <td><%= item.satuan %></td>
+              <td><%= item.jumlah %></td>
+              <td><%= item.harga_satuan %></td>
+              <td><%= item.status %></td>
+              <td>
+                <form method="POST" action="/cart/add">
+                  <input
+                    type="hidden"
+                    name="id_barang"
+                    value="<%= item.id_barang %>"
+                  />
+                  <input
+                    type="number"
+                    name="jumlah"
+                    min="1"
+                    max="<%= item.jumlah %>"
+                    value="1"
+                    style="width: 60px"
+                  />
+                  <button type="submit">Tambah</button>
+                </form>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="transaksi" class="tab-content">
+        <h1>Detail Transaksi</h1>
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>ID Transaksi</th>
+              <th>Nomor Transaksi</th>
+              <th>Tanggal Transaksi</th>
+              <th>Nama Barang</th>
+              <th>Jumlah</th>
+              <th>Satuan</th>
+              <th>Harga Satuan</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% transaksi.forEach(t => { %>
+            <tr>
+              <td><%= t.id_transaksi %></td>
+              <td><%= t.nomor_transaksi %></td>
+              <td><%= t.tanggal_transaksi.toISOString().split('T')[0] %></td>
+              <td><%= t.nama_barang %></td>
+              <td><%= t.jumlah %></td>
+              <td><%= t.satuan %></td>
+              <td><%= t.harga_satuan %></td>
+              <td><%= t.total %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="cart" class="tab-content">
+        <h1>Keranjang</h1>
+        <% if (cart && cart.length > 0) { %>
+        <form method="POST" action="/checkout">
+          <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Nama Barang</th>
+                <th>Qty</th>
+                <th>Harga</th>
+                <th>Subtotal</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% let total = 0; cart.forEach(c => { let subtotal = c.jumlah *
+              c.harga_satuan; total += subtotal; %>
+              <tr>
+                <td><%= c.nama_barang %></td>
+                <td><%= c.jumlah %></td>
+                <td><%= c.harga_satuan %></td>
+                <td><%= subtotal %></td>
+                <td>
+                  <form method="POST" action="/cart/remove">
+                    <input
+                      type="hidden"
+                      name="id_barang"
+                      value="<%= c.id_barang %>"
+                    />
+                    <button type="submit">Hapus</button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+              <tr>
+                <td colspan="3"><b>Total</b></td>
+                <td colspan="2"><b><%= total %></b></td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="submit">Checkout</button>
+        </form>
+        <% } else { %>
+        <p>Keranjang kosong</p>
+        <% } %>
+      </div>
+    </div>
+
+    <script>
+      const tabs = document.querySelectorAll(".tab");
+      const contents = document.querySelectorAll(".tab-content");
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((t) => t.classList.remove("active"));
+          contents.forEach((c) => c.classList.remove("active"));
+
+          tab.classList.add("active");
+          const tabId = tab.getAttribute("data-tab");
+          document.getElementById(tabId).classList.add("active");
+        });
+      });
+    </script>
+  </body>
+</html>

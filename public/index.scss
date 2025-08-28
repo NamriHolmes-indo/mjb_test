@@ -1,0 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins&display=swap");
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat";
+  margin: 0;
+}
+
+body {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+
+  .kiri {
+    flex: 2;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    h1 {
+      margin-top: 10px;
+    }
+  }
+
+  .kanan {
+    flex: 8;
+    overflow-x: auto;
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 10px;
+
+      .tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        user-select: none;
+        border: 1px solid transparent;
+        border-bottom: none;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: #f0f0f0;
+        }
+
+        &.active {
+          border: 1px solid #ccc;
+          border-bottom: 1px solid white;
+          background-color: white;
+          font-weight: 700;
+        }
+      }
+    }
+
+    .tab-content {
+      display: none;
+
+      &.active {
+        display: block;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+          border: 1px solid #ccc;
+          padding: 8px 12px;
+          text-align: left;
+        }
+
+        th {
+          background-color: #f9f9f9;
+          font-weight: 600;
+        }
+
+        tbody tr:nth-child(even) {
+          background-color: #f5f5f5;
+        }
+      }
+    }
+  }
+}
